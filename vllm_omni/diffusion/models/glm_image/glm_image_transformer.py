@@ -545,17 +545,9 @@ class GlmImageTransformer2DModel(CachedTransformer):
     This is the vllm-omni optimized version of the GLM-Image DiT model.
 
     Args:
-        od_config: OmniDiffusionConfig containing model configuration.
-        patch_size: Size of image patches.
-        in_channels: Number of input channels (latent channels).
-        num_layers: Number of transformer blocks.
-        attention_head_dim: Dimension of each attention head.
-        num_attention_heads: Number of attention heads.
-        out_channels: Number of output channels.
-        text_embed_dim: Dimension of text embeddings.
-        time_embed_dim: Dimension of timestep embeddings.
-        condition_dim: Dimension of conditioning embeddings.
-        prior_vq_quantizer_codebook_size: Size of prior VQ codebook.
+        od_config: OmniDiffusionConfig containing model configuration. The
+            transformer hyper-parameters (e.g. patch size / channels / heads)
+            are read from `od_config.tf_model_config`.
     """
 
     def __init__(
