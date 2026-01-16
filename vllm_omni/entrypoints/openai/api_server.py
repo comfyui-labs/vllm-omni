@@ -45,7 +45,6 @@ from vllm.entrypoints.pooling.pooling.serving import OpenAIServingPooling
 from vllm.entrypoints.pooling.score.serving import ServingScores
 from vllm.entrypoints.serve.disagg.serving import ServingTokens
 from vllm.entrypoints.serve.tokenize.serving import OpenAIServingTokenization
-from vllm.tool_parsers import ToolParserManager
 
 # yapf conflicts with isort for this block
 # yapf: disable
@@ -59,6 +58,7 @@ from vllm.entrypoints.utils import (
 )
 from vllm.logger import init_logger
 from vllm.tasks import POOLING_TASKS
+from vllm.tool_parsers import ToolParserManager
 from vllm.utils.system_utils import decorate_logs
 
 from vllm_omni.entrypoints.async_omni import AsyncOmni

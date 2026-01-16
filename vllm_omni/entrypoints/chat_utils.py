@@ -22,6 +22,8 @@ from vllm.entrypoints.chat_utils import (
     _postprocess_messages,
     _ToolParser,
 )
+
+
 class OmniAsyncMultiModalItemTracker(AsyncMultiModalItemTracker):
     def create_parser(self) -> "BaseMultiModalContentParser":
         return OmniAsyncMultiModalContentParser(self)

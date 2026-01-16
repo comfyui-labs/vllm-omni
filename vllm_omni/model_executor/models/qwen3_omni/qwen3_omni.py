@@ -359,11 +359,21 @@ class Qwen3OmniMoeForConditionalGeneration(
             if input_ids.shape[0] % 16 == 0:
                 codes.append(input_ids.reshape(1, 16, -1))
             else:
-                logger.warning(f"Input_ids length: {input_ids.shape[0]} is not divisible by 16, padding with zeros. This should only happen in warm up.")
+                logger.warning(
+                    (
+                        "Input_ids length: %s is not divisible by 16, padding "
+                        "with zeros. This should only happen in warm up."
+                    ),
+                    input_ids.shape[0],
+                )
                 input_ids_flatten = input_ids.reshape(-1)
-                input_ids_flatten = torch.cat([input_ids_flatten, torch.zeros(16 - input_ids.shape[0] % 16, dtype=torch.long, device=input_ids.device)])
+                input_ids_flatten = torch.cat(
+                    [
+                        input_ids_flatten,
+                        torch.zeros(16 - input_ids.shape[0] % 16, dtype=torch.long, device=input_ids.device),
+                    ]
+                )
                 codes.append(input_ids_flatten.reshape(1, 16, -1))
-
 
             # Generate audio from codec codes
             audio_tensors = []

@@ -29,10 +29,6 @@ from vllm.entrypoints.chat_utils import (
     make_tool_call_id,
     resolve_chat_template_content_format,
 )
-from vllm.entrypoints.openai.parser.harmony_utils import (
-    get_streamable_parser_for_assistant,
-    parse_chat_output,
-)
 from vllm.entrypoints.openai.chat_completion.protocol import (
     ChatCompletionNamedToolChoiceParam,
     ChatCompletionRequest,
@@ -61,6 +57,10 @@ from vllm.entrypoints.openai.engine.serving import (
     ResponsesRequest,
     clamp_prompt_logprobs,
 )
+from vllm.entrypoints.openai.parser.harmony_utils import (
+    get_streamable_parser_for_assistant,
+    parse_chat_output,
+)
 from vllm.entrypoints.openai.utils import maybe_filter_parallel_tool_calls
 from vllm.entrypoints.utils import should_include_usage
 from vllm.inputs.data import PromptType, TokensPrompt
@@ -75,9 +75,9 @@ from vllm.tokenizers.mistral import (
     truncate_tool_call_ids,
     validate_request_params,
 )
-from vllm.transformers_utils.tokenizer import AnyTokenizer
 from vllm.tool_parsers import ToolParser
 from vllm.tool_parsers.mistral_tool_parser import MistralToolCall
+from vllm.transformers_utils.tokenizer import AnyTokenizer
 from vllm.utils.collection_utils import as_list, is_list_of
 
 from vllm_omni.entrypoints.chat_utils import parse_chat_messages_futures
@@ -178,12 +178,10 @@ class OmniOpenAIServingChat(OpenAIServingChat, AudioMixin):
                 maybe_serialize_tool_calls(request)
                 truncate_tool_call_ids(request)
                 validate_request_params(request)
-                
+
             # Check if tool parsing is unavailable (common condition)
             tool_parsing_unavailable = (
-                tool_parser is None
-                and not isinstance(tokenizer, MistralTokenizer)
-                and not self.use_harmony
+                tool_parser is None and not isinstance(tokenizer, MistralTokenizer) and not self.use_harmony
             )
 
             # Validate tool_choice when tool parsing is required but unavailable
@@ -200,8 +198,7 @@ class OmniOpenAIServingChat(OpenAIServingChat, AudioMixin):
                 elif request.tool_choice != "auto":
                     # "required" or named tool requires tool parser
                     return self.create_error_response(
-                        f'tool_choice="{request.tool_choice}" requires '
-                        "--tool-call-parser to be set"
+                        f'tool_choice="{request.tool_choice}" requires --tool-call-parser to be set'
                     )
 
             if request.tools is None or (request.tool_choice == "none" and self.exclude_tools_when_tool_choice_none):
@@ -244,13 +241,8 @@ class OmniOpenAIServingChat(OpenAIServingChat, AudioMixin):
                 )
             else:
                 should_include_tools = tool_dicts is not None
-                conversation, engine_prompts = self._make_request_with_harmony(
-                    request, should_include_tools
-                )
-                request_prompts = [
-                    engine_prompt.get("prompt_token_ids", [])
-                    for engine_prompt in engine_prompts
-                ]
+                conversation, engine_prompts = self._make_request_with_harmony(request, should_include_tools)
+                request_prompts = [engine_prompt.get("prompt_token_ids", []) for engine_prompt in engine_prompts]
 
         except (ValueError, TypeError, RuntimeError, jinja2.TemplateError) as e:
             logger.exception("Error in preprocessing prompt inputs")
@@ -1482,9 +1474,7 @@ class OmniOpenAIServingChat(OpenAIServingChat, AudioMixin):
                     return self.create_error_response(str(e))
                 # If the reasoning parser is enabled,
                 # tool calls are extracted exclusively from the content.
-                reasoning_content, content = reasoning_parser.extract_reasoning(
-                    output.text, request=request
-                )
+                reasoning_content, content = reasoning_parser.extract_reasoning(output.text, request=request)
                 if not request.include_reasoning:
                     reasoning_content = None
             else:
