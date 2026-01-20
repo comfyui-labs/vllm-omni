@@ -6,6 +6,7 @@ E2E Online tests for Qwen3-Omni model.
 
 import concurrent.futures
 import os
+
 os.environ["VLLM_WORKER_MULTIPROC_METHOD"] = "spawn"
 import time
 from pathlib import Path

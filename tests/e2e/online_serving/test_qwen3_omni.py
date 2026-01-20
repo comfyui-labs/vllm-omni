@@ -3,7 +3,9 @@
 """
 E2E Online tests for Qwen3-Omni model with video input and audio output.
 """
+
 import os
+
 os.environ["VLLM_WORKER_MULTIPROC_METHOD"] = "spawn"
 
 import base64
@@ -22,8 +24,6 @@ from vllm.assets.video import VideoAsset
 from vllm.utils.network_utils import get_open_port
 
 from vllm_omni.utils import is_rocm
-
-os.environ["VLLM_TEST_CLEAN_GPU_MEMORY"] = "1"
 
 models = ["Qwen/Qwen3-Omni-30B-A3B-Instruct"]
 
