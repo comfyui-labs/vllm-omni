@@ -6,6 +6,7 @@ E2E Online tests for Qwen3-Omni model.
 
 import concurrent.futures
 import os
+os.environ["VLLM_WORKER_MULTIPROC_METHOD"] = "spawn"
 import time
 from pathlib import Path
 
@@ -19,9 +20,6 @@ from tests.conftest import (
     dummy_messages_from_mix_data,
     modify_stage_config,
 )
-
-os.environ["VLLM_WORKER_MULTIPROC_METHOD"] = "spawn"
-os.environ["VLLM_TEST_CLEAN_GPU_MEMORY"] = "1"
 
 models = ["Qwen/Qwen3-Omni-30B-A3B-Instruct"]
 

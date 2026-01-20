@@ -15,8 +15,6 @@ if str(REPO_ROOT) not in sys.path:
 
 from vllm_omni import Omni
 
-os.environ["VLLM_TEST_CLEAN_GPU_MEMORY"] = "1"
-
 # Use random weights model for CI testing (small, no authentication required)
 models = ["linyueqian/stable_audio_random"]
 
