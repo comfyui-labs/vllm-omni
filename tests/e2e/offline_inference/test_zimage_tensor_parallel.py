@@ -23,7 +23,8 @@ from vllm_omni.diffusion.data import DiffusionParallelConfig
 from vllm_omni.outputs import OmniRequestOutput
 from vllm_omni.utils.platform_utils import is_npu, is_rocm
 
-os.environ["VLLM_TEST_CLEAN_GPU_MEMORY"] = "1"
+# os.environ["VLLM_TEST_CLEAN_GPU_MEMORY"] = "1"
+os.environ["VLLM_WORKER_MULTIPROC_METHOD"] = "spawn"
 
 PROMPT = "a photo of a cat sitting on a laptop keyboard"
 

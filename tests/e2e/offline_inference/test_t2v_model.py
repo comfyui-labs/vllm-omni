@@ -12,7 +12,8 @@ if str(REPO_ROOT) not in sys.path:
 
 from vllm_omni import Omni
 
-os.environ["VLLM_TEST_CLEAN_GPU_MEMORY"] = "1"
+# os.environ["VLLM_TEST_CLEAN_GPU_MEMORY"] = "1"
+os.environ["VLLM_WORKER_MULTIPROC_METHOD"] = "spawn"
 
 models = ["Wan-AI/Wan2.2-T2V-A14B-Diffusers"]
 
