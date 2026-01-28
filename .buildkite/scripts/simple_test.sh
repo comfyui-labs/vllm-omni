@@ -47,7 +47,7 @@ fi
 VENV_PYTHON="${VENV_DIR}/bin/python"
 [[ -x "${VENV_PYTHON}" ]] || { echo "Python not found in ${VENV_DIR}"; exit 1; }
 
-"${UV_BIN}" pip install --python "${VENV_PYTHON}" vllm==0.14.0
+"${UV_BIN}" pip install --python "${VENV_PYTHON}" --upgrade --force-reinstall vllm --extra-index-url https://wheels.vllm.ai/706f123b23b75097da9a3f51ce538bd784fdc75b
 "${UV_BIN}" pip install --python "${VENV_PYTHON}" -e ".[dev]"
 
 "${VENV_PYTHON}" -m pytest -v -s tests/entrypoints/
