@@ -20,7 +20,6 @@ from vllm.forward_context import set_forward_context
 from vllm.model_executor.layers.fused_moe.routed_experts_capturer import (
     RoutedExpertsCapturer,
 )
-from vllm.model_executor.models.interfaces import supports_mm_encoder_only
 from vllm.utils.math_utils import cdiv
 from vllm.v1.core.sched.output import GrammarOutput, SchedulerOutput
 from vllm.v1.outputs import AsyncModelRunnerOutput, make_empty_encoder_model_runner_output
@@ -435,7 +434,8 @@ class GPUGenerationModelRunner(OmniGPUModelRunner):
             remove_lora: If False, dummy LoRAs are not destroyed after the run
             activate_lora: If False, dummy_run is performed without LoRAs.
         """
-        if supports_mm_encoder_only(self.model):
+        mm_config = self.vllm_config.model_config.multimodal_config
+        if mm_config and mm_config.mm_encoder_only:
             # The current dummy run only covers LM execution, so we can skip it.
             # mm encoder dummy run may need to add in the future.
             return torch.tensor([]), torch.tensor([])
