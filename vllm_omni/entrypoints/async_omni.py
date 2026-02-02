@@ -681,9 +681,7 @@ class AsyncOmni(OmniBase):
         OMNI: Required by upstream OpenAIServingModels.__init__ which
         accesses engine_client.renderer.
         """
-        if self.input_processor is not None:
-            return self.input_processor.renderer
-        return None
+        return self.input_processor.renderer
 
     async def do_log_stats(self) -> None:
         pass

@@ -13,6 +13,7 @@ import torch
 from fastapi import Request
 from PIL import Image
 from pydantic import TypeAdapter
+from vllm.renderers import RendererLike
 
 from vllm_omni.entrypoints.async_omni import AsyncOmni
 from vllm_omni.inputs.data import OmniDiffusionSamplingParams, OmniTextPrompt
@@ -328,7 +329,7 @@ class OmniOpenAIServingChat(OpenAIServingChat, AudioMixin):
     async def _preprocess_chat(
         self,
         request: ChatLikeRequest | ResponsesRequest,
-        renderer: Any,
+        renderer: RendererLike,
         messages: list[ChatCompletionMessageParam],
         chat_template: str | None,
         chat_template_content_format: ChatTemplateContentFormatOption,

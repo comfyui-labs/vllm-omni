@@ -13,7 +13,6 @@ except ImportError:
     # Python < 3.11: use typing_extensions
     from typing_extensions import NotRequired
 
-
 import torch
 from vllm.inputs.data import EmbedsPrompt, TextPrompt, TokenInputs, TokensPrompt
 
