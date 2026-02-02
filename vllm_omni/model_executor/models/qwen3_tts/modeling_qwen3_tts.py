@@ -428,6 +428,8 @@ def mel_spectrogram(
     mel_spec = dynamic_range_compression_torch(mel_spec)
 
     return mel_spec
+
+
 def _compute_default_rope_parameters(
     config,
     device,
@@ -442,6 +444,7 @@ def _compute_default_rope_parameters(
     # Compute the inverse frequencies
     inv_freq = 1.0 / (base ** (torch.arange(0, dim, 2, dtype=torch.int64).to(device=device, dtype=torch.float) / dim))
     return inv_freq, attention_factor
+
 
 class Qwen3TTSPreTrainedModel(PreTrainedModel):
     config_class = Qwen3TTSConfig
