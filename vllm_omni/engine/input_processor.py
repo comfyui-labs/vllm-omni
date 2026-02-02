@@ -41,7 +41,6 @@ class OmniInputProcessor(InputProcessor):
 
     Args:
         vllm_config: Global vLLM configuration
-        tokenizer: Tokenizer instance for text processing
         mm_registry: Multi-modal registry for processing multimodal inputs
     """
 
